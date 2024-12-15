@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 "Comment(models.Model)",
 "viewsets",
 "viewsets.ModelViewSet",
+["viewsets", "viewsets.ModelViewSet", "Comment.objects.all()"]
 class Post(models.Model):
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
