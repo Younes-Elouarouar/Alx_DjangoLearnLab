@@ -1,19 +1,16 @@
-from rest_framework import viewsets, permissions
+from rest_framework import generics, permissions
 from rest_framework.response import Response
 from .models import Post
-from .serializers import PostSerializer
 from django.contrib.auth import get_user_model
-"Post.objects.filter(author__in=following_users).order_by"
+
 User = get_user_model()
 
-class FeedViewSet(viewsets.ViewSet):
+# Feed view showing posts from users the current user follows
+class FeedView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
+    queryset = Post.objects.all()  # Will be overridden in the `get_queryset`
 
-    def list(self, request):
-        # Get posts from users the current user is following
-        followed_users = request.user.following.all()
-        posts = Post.objects.filter(author__in=followed_users).order_by('-created_at')
-
-        # Serialize the posts
-        serializer = PostSerializer(posts, many=True)
-        return Response(serializer.data)
+    def get_queryset(self):
+        user = self.request.user
+        following = user.following.all()
+        return Post.objects.filter(author__in=following).order_by('-created_at')
