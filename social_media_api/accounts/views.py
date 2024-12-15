@@ -1,7 +1,6 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.authtoken.models import Token  # Import Token model
 from .serializers import RegisterSerializer, LoginSerializer
 
 # Register View
@@ -10,12 +9,9 @@ class RegisterView(APIView):
         # Use RegisterSerializer to validate and save the new user
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
-            user = serializer.save()  # Save the user
+            user, token = serializer.save()  # Save the user and get the token
 
-            # Create a token for the newly created user
-            token = Token.objects.create(user=user)
-
-            # Return the token
+            # Return the token in the response
             return Response({"token": token.key}, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -32,4 +28,3 @@ class LoginView(APIView):
             return Response({"token": token.key})
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
