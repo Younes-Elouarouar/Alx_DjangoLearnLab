@@ -6,5 +6,6 @@ router = DefaultRouter()
 router.register(r'feed', FeedView, basename='feed')
 
 urlpatterns = [
+    path('"feed/"', include(feeds.urls))
     path('', include(router.urls)),
 ]
