@@ -2,10 +2,11 @@ from rest_framework import status, permissions, generics
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from rest_framework.exceptions import PermissionDenied
+from django.contrib.auth import get_user_model
 
 # Get the custom user model
 User = get_user_model()
-
+users = User.objects.all()
 # Follow a user - CBV using GenericAPIView
 class FollowUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
