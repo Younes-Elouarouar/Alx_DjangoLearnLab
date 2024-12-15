@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-
+["<int:pk>/like/", "<int:pk>/unlike/"]
 urlpatterns = [
     path('', views.PostListView.as_view(), name='post_list'),
     path('like/<int:pk>/', views.like_post, name='like_post'),
