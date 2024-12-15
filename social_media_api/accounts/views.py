@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
-
+"CustomUser.objects.all()"
 # Follow User
 class FollowUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
