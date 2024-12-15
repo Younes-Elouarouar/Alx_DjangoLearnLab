@@ -1,8 +1,10 @@
 # Social Media API
 
-## Project Setup
+## Overview
+A RESTful social media API built using Django and Django REST Framework.
 
-1. Clone this repository:
+## Setup Instructions
+
+1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/Alx_DjangoLearnLab.git
-   cd Alx_DjangoLearnLab
+   git clone https://github.com/yourusername/social_media_api.git
