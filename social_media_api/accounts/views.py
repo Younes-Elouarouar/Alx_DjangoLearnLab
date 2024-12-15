@@ -1,30 +1,39 @@
-from rest_framework import status
+from rest_framework import status, permissions
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.views import APIView
-from .serializers import RegisterSerializer, LoginSerializer
+from django.contrib.auth import get_user_model
+from rest_framework.exceptions import PermissionDenied
 
-# Register View
-class RegisterView(APIView):
-    def post(self, request):
-        # Use RegisterSerializer to validate and save the new user
-        serializer = RegisterSerializer(data=request.data)
-        if serializer.is_valid():
-            user, token = serializer.save()  # Save the user and get the token
+User = get_user_model()
 
-            # Return the token in the response
-            return Response({"token": token.key}, status=status.HTTP_201_CREATED)
+# Follow a user
+@api_view(['POST'])
+def follow_user(request, user_id):
+    try:
+        user_to_follow = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        return Response({"detail": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    # Ensure the user can't follow themselves
+    if user_to_follow == request.user:
+        raise PermissionDenied("You cannot follow yourself.")
 
-# Login View
-class LoginView(APIView):
-    def post(self, request):
-        # Use LoginSerializer to authenticate the user
-        serializer = LoginSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.validated_data  # Validated user object
-            token, created = Token.objects.get_or_create(user=user)  # Get or create a token for the user
+    # Add the user to the 'following' list
+    request.user.following.add(user_to_follow)
+    return Response({"detail": f"You are now following {user_to_follow.username}"}, status=status.HTTP_200_OK)
 
-            return Response({"token": token.key})
+# Unfollow a user
+@api_view(['POST'])
+def unfollow_user(request, user_id):
+    try:
+        user_to_unfollow = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        return Response({"detail": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    # Ensure the user can't unfollow themselves
+    if user_to_unfollow == request.user:
+        raise PermissionDenied("You cannot unfollow yourself.")
+
+    # Remove the user from the 'following' list
+    request.user.following.remove(user_to_unfollow)
+    return Response({"detail": f"You have unfollowed {user_to_unfollow.username}"}, status=status.HTTP_200_OK)
