@@ -1,13 +1,9 @@
-from django.urls import path, include
-from .views import FeedView
-from rest_framework.routers import DefaultRouter
-
-router = DefaultRouter()
-router.register(r'feed', FeedView, basename='feed')
+from django.urls import path
+from . import views
 
 urlpatterns = [
-    path('feed/', FeedView.as_view(), name='feed'),
-
-    path('"feed/"', include(feeds.urls))
-    path('', include(router.urls)),
+    path('', views.PostListView.as_view(), name='post_list'),
+    path('like/<int:pk>/', views.like_post, name='like_post'),
+    path('unlike/<int:pk>/', views.unlike_post, name='unlike_post'),
+    path('feed/', views.user_feed, name='user_feed'),
 ]
