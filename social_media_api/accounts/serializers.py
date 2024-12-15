@@ -17,7 +17,11 @@ class RegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # Create the user using the custom user model
         user = get_user_model().objects.create_user(**validated_data)  # This will hash the password
-        return user
+
+        # Create a token for the newly created user (this part is now inside the serializer)
+        token = Token.objects.create(user=user)
+
+        return user, token  # Return both user and token
 
 # Login Serializer
 class LoginSerializer(serializers.Serializer):
