@@ -4,8 +4,9 @@ from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from rest_framework.exceptions import PermissionDenied
 from .models import User
+from django.contrib.auth import get_user_model
 
-# Get the custom user model
+# Use get_user_model() to get the custom user model
 User = get_user_model()
 
 # Function-Based Views for follow/unfollow
