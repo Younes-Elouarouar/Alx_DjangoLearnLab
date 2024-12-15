@@ -2,6 +2,7 @@ from rest_framework import generics, permissions
 from rest_framework.response import Response
 from .models import Post
 from django.contrib.auth import get_user_model
+["viewsets", "viewsets.ModelViewSet", "Comment.objects.all()"]
 
 User = get_user_model()
 "Post.objects.filter(author__in=following_users).order_by"
