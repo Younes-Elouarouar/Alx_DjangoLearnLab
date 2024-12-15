@@ -4,7 +4,7 @@ from .models import Post
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
-
+"Post.objects.filter(author__in=following_users).order_by"
 # Feed view showing posts from users the current user follows
 class FeedView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
