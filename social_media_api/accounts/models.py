@@ -1,10 +1,10 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 
-class User(AbstractUser):
-    following = models.ManyToManyField(
-        'self', 
-        symmetrical=False,  # Asymmetrical relationship (user A follows user B, but B does not follow A automatically)
-        related_name='followers',  # The reverse relationship to get followers of a user
-        blank=True  # Allow the user to have no followers initially
-    )
+class CustomUser(AbstractUser):
+    followers = models.ManyToManyField('self', symmetrical=False, related_name='following', blank=True)
+    bio = models.TextField(null=True, blank=True)
+    profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
+    
+    def __str__(self):
+        return self.username
