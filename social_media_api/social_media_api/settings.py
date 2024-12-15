@@ -12,8 +12,7 @@ INSTALLED_APPS = [
 ]
 
 # Use custom user model
-AUTH_USER_MODEL = 'accounts.User'
-
+AUTH_USER_MODEL = 'accounts.CustomUser'
 # Django REST Framework configuration (optional)
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
