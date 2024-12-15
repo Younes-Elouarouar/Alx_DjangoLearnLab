@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from .models import Post
 from django.contrib.auth import get_user_model
 ["viewsets", "viewsets.ModelViewSet", "Comment.objects.all()"]
-
+["generics.get_object_or_404(Post, pk=pk)", "Like.objects.get_or_create(user=request.user, post=post)", "Notification.objects.create"]
 User = get_user_model()
 "Post.objects.filter(author__in=following_users).order_by"
 # Feed view showing posts from users the current user follows
